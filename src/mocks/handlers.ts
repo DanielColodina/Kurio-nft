@@ -276,6 +276,11 @@ export const handlers = [
   http.put(apiPath("/profile"), async ({ request }) => {
     if (!readState().session) return unauthorized();
     const profile = (await request.json()) as User;
+    if (!profile.name.trim() || !/^\S+@\S+\.\S+$/.test(profile.email))
+      return HttpResponse.json(
+        { message: "Revise o nome e o e-mail informados." },
+        { status: 422 },
+      );
     updateState((s) => {
       s.profilesByUser[s.session!.id] = profile;
       const account = s.accounts.find(({ user }) => user.id === s.session!.id);
@@ -283,6 +288,35 @@ export const handlers = [
       s.session = profile;
     });
     return HttpResponse.json(profile);
+  }),
+  http.put(apiPath("/profile/password"), async ({ request }) => {
+    const state = readState();
+    if (!state.session) return unauthorized();
+    const body = (await request.json()) as {
+      currentPassword: string;
+      newPassword: string;
+    };
+    const account = state.accounts.find(
+      ({ user }) => user.id === state.session!.id,
+    );
+    if (!account || account.passwordHash !== (await hashPassword(body.currentPassword)))
+      return HttpResponse.json(
+        { message: "A senha atual está incorreta." },
+        { status: 422 },
+      );
+    if (body.newPassword.length < 8)
+      return HttpResponse.json(
+        { message: "A nova senha deve ter pelo menos 8 caracteres." },
+        { status: 422 },
+      );
+    const passwordHash = await hashPassword(body.newPassword);
+    updateState((draft) => {
+      const current = draft.accounts.find(
+        ({ user }) => user.id === draft.session!.id,
+      );
+      if (current) current.passwordHash = passwordHash;
+    });
+    return new HttpResponse(null, { status: 204 });
   }),
   http.get(apiPath("/wallets"), () =>
     readState().session
@@ -294,6 +328,19 @@ export const handlers = [
   http.put(apiPath("/wallets"), async ({ request }) => {
     if (!readState().session) return unauthorized();
     const wallets = (await request.json()) as Wallet[];
+    if (
+      wallets.length > 2 ||
+      wallets.some(
+        (wallet) =>
+          !wallet.label.trim() ||
+          (!/^0x[a-fA-F0-9]{8,}$/.test(wallet.address) &&
+            !wallet.address.endsWith(".eth")),
+      )
+    )
+      return HttpResponse.json(
+        { message: "Revise os dados das carteiras." },
+        { status: 422 },
+      );
     updateState((s) => {
       s.walletsByUser[s.session!.id] = wallets;
     });

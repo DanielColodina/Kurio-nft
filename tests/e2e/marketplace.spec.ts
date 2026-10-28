@@ -147,3 +147,22 @@ test("pagamento recusado mantém o carrinho", async ({ page }) => {
   await page.goto("/cart");
   await expect(page.getByText("Emerald Ape #042")).toBeVisible();
 });
+
+test("perfil persiste avatar, dados e alteração de senha", async ({ page }) => {
+  await page.goto("/login");
+  await page
+    .getByRole("main")
+    .getByRole("button", { name: "Entrar", exact: true })
+    .click();
+  await page.goto("/profile");
+  await page.getByLabel("Nome de exibição *").fill("Colecionador Atualizado");
+  await page.getByLabel("Senha atual").fill("Kurio@2026");
+  await page.getByLabel("Nova senha", { exact: true }).fill("NovaKurio@2026");
+  await page.getByLabel("Confirmar nova senha").fill("NovaKurio@2026");
+  await page.getByRole("button", { name: "Salvar", exact: true }).click();
+  await expect(page.getByRole("status")).toContainText("Dados salvos");
+  await page.reload();
+  await expect(page.getByLabel("Nome de exibição *")).toHaveValue(
+    "Colecionador Atualizado",
+  );
+});
