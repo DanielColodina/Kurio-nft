@@ -7,7 +7,16 @@ export const useCatalog = (params: Record<string, string | undefined> = {}) =>
     queryKey: ["nfts", params],
     queryFn: async ({ signal }) =>
       (
-        await api.get<{ items: Nft[]; total: number }>("/nfts", {
+        await api.get<{
+          items: Nft[];
+          total: number;
+          page: number;
+          totalPages: number;
+          facets: {
+            categories: Record<string, number>;
+            networks: Record<string, number>;
+          };
+        }>("/nfts", {
           params,
           signal,
         })

@@ -46,6 +46,8 @@ const hashPassword = async (value: string) => {
     byte.toString(16).padStart(2, "0"),
   ).join("");
 };
+const normalize = (value: string) =>
+  value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
 export const handlers = [
   realtime.addEventListener("connection", (connection) => {
@@ -100,25 +102,32 @@ export const handlers = [
         { status: 503 },
       );
     const url = new URL(request.url);
-    const search = (url.searchParams.get("search") ?? "").toLowerCase();
+    const search = normalize(url.searchParams.get("search") ?? "");
     const network = url.searchParams.get("network");
     const category = url.searchParams.get("category");
     const tab = url.searchParams.get("tab");
     const maxPrice = url.searchParams.get("maxPrice");
+    const minPrice = url.searchParams.get("minPrice");
     const sort = url.searchParams.get("sort");
+    const page = Math.max(1, Number(url.searchParams.get("page") ?? 1));
+    const pageSize = 9;
     let items =
       activeScenario() === "empty"
         ? []
         : nfts.filter(
             (n) =>
-              (!search || n.name.toLowerCase().includes(search)) &&
+              (!search ||
+                normalize(
+                  [n.name, n.creator, n.collection, n.category, n.network].join(" "),
+                ).includes(search)) &&
               (!network || n.network.toLowerCase() === network) &&
               (!category || n.category === category) &&
+              (!minPrice || new Decimal(n.price).greaterThanOrEqualTo(minPrice)) &&
               (!maxPrice || new Decimal(n.price).lessThanOrEqualTo(maxPrice)),
           );
-    if (tab === "new") items = [...items].reverse();
+    if (tab === "new") items = items.filter((item) => item.launch);
     if (tab === "trending")
-      items = [...items].sort((a, b) => b.stock - a.stock);
+      items = items.filter((item) => item.trending);
     if (sort === "price_asc")
       items = [...items].sort((a, b) =>
         new Decimal(a.price).comparedTo(b.price),
@@ -127,7 +136,28 @@ export const handlers = [
       items = [...items].sort((a, b) =>
         new Decimal(b.price).comparedTo(a.price),
       );
-    return HttpResponse.json({ items, total: items.length });
+    if (!sort)
+      items = [...items].sort((a, b) =>
+        String(b.createdAt).localeCompare(String(a.createdAt)),
+      );
+    const total = items.length;
+    const totalPages = Math.max(1, Math.ceil(total / pageSize));
+    const safePage = Math.min(page, totalPages);
+    const start = (safePage - 1) * pageSize;
+    const countBy = (field: "category" | "network") =>
+      Object.fromEntries(
+        nfts.reduce((map, nft) => {
+          map.set(nft[field], (map.get(nft[field]) ?? 0) + 1);
+          return map;
+        }, new Map<string, number>()),
+      );
+    return HttpResponse.json({
+      items: items.slice(start, start + pageSize),
+      total,
+      page: safePage,
+      totalPages,
+      facets: { categories: countBy("category"), networks: countBy("network") },
+    });
   }),
   http.get(apiPath("/nfts/:id"), async ({ params }) => {
     await scenarioDelay();

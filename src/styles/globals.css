@@ -320,6 +320,46 @@ a {
   row-gap: 125px;
   margin-top: 27px;
 }
+.kurio-result-count {
+  margin-top: 16px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.kurio-desktop-search {
+  margin-bottom: 18px;
+}
+.kurio-desktop-search > label {
+  display: block;
+  margin-bottom: 7px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.kurio-desktop-search > div {
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  border: 1px solid var(--brown);
+  border-radius: 10px;
+  background: var(--surface);
+}
+.kurio-desktop-search input {
+  min-width: 0;
+  flex: 1;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--text);
+}
+.kurio-desktop-search button {
+  min-height: 44px;
+  color: var(--accent);
+}
+.kurio-pagination button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
 .kurio-nft-card {
   min-width: 0;
 }
@@ -492,7 +532,7 @@ a {
     transition-duration: 0.01ms !important;
   }
 }
-@media (max-width: 700px) {
+@media (max-width: 1023px) {
   .kurio-detail-mobile-controls {
     margin-bottom: 2px;
   }
@@ -590,7 +630,7 @@ a {
     padding-top: 24px;
   }
   body {
-    padding-bottom: calc(82px + env(safe-area-inset-bottom));
+    padding-bottom: calc(94px + env(safe-area-inset-bottom));
   }
   .container {
     width: calc(100% - 48px);
@@ -780,8 +820,8 @@ a {
     position: absolute;
     right: 8px;
     top: 8px;
-    width: 30px;
-    height: 30px;
+    width: 44px;
+    height: 44px;
     display: grid;
     place-items: center;
     padding: 0;
@@ -796,7 +836,7 @@ a {
   }
 }
 
-@media (min-width: 701px) {
+@media (min-width: 1024px) {
   .kurio-detail-layout {
     grid-template-columns: 575px minmax(0, 1fr);
     gap: 32px;
@@ -971,8 +1011,24 @@ a {
     margin-left: auto;
   }
 }
-@media (min-width: 701px) {
+@media (min-width: 1024px) {
   .mobile-only {
     display: none !important;
+  }
+}
+
+@media (max-width: 359px) {
+  .kurio-nft-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .kurio-stagger {
+    transform: none;
+  }
+  .kurio-nft-image-wrap {
+    height: auto;
+  }
+  .kurio-nft-image-wrap img {
+    height: auto;
+    aspect-ratio: 1;
   }
 }

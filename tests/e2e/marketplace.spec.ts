@@ -94,8 +94,8 @@ test("ordenação por preço e âncora do diário permanecem funcionais", async 
   await page.goto("/?sort=price_asc#diario");
   await expect(page).toHaveURL(/\?sort=price_asc#diario$/);
   await expect(
-    page.locator(".kurio-nft-grid.desktop-only article").first(),
-  ).toContainText("0.39 ETH");
+    page.locator(".kurio-nft-grid article").first(),
+  ).toContainText("0.35 ETH");
   await expect(page.locator("#diario")).toBeInViewport();
 });
 

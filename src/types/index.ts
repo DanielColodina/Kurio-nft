@@ -1,14 +1,24 @@
 export type Nft = {
   id: string;
+  slug?: string;
   tokenId: string;
   name: string;
+  creator?: string;
+  collection?: string;
+  description?: string;
   price: string;
   oldPrice?: string;
   image: string;
+  alt?: string;
   rarity?: "RARO" | "ÉPICO";
   category: string;
   network: "Ethereum" | "Polygon" | "Solana";
   stock: number;
+  createdAt?: string;
+  featured?: boolean;
+  launch?: boolean;
+  trending?: boolean;
+  likes?: number;
   version: number;
 };
 

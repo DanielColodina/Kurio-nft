@@ -47,6 +47,7 @@ const indexRoute = createRoute({
     category: typeof s.category === "string" ? s.category : undefined,
     tab: typeof s.tab === "string" ? s.tab : undefined,
     maxPrice: typeof s.maxPrice === "string" ? s.maxPrice : undefined,
+    minPrice: typeof s.minPrice === "string" ? s.minPrice : undefined,
     favorites:
       s.favorites === true || s.favorites === "true" ? true : undefined,
     sort: typeof s.sort === "string" ? s.sort : undefined,

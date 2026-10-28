@@ -3,7 +3,7 @@ import type { Nft } from "../types";
 const asset = (file: string) =>
   `${import.meta.env.BASE_URL}assets/nfts/${file}`;
 
-export const nfts: Nft[] = [
+const featuredNfts: Nft[] = [
   {
     id: "emerald-ape-042",
     tokenId: "#0042",
@@ -95,6 +95,70 @@ export const nfts: Nft[] = [
     version: 1,
   },
 ];
+
+const names = [
+  "Amber Genesis", "Lunar Frame", "Pixel Jaguar", "Prism Echo",
+  "Velvet Orbit", "Chrome Spirit", "Solar Rhythm", "Mystic Lens",
+  "Neon Totem", "Digital Flora", "Quantum Mask", "Aurora Pulse",
+  "Jungle Cipher", "Crystal Nomad", "Electric Muse", "Obsidian Wave",
+  "Meta Horizon", "Rare Signal", "Cyber Bloom", "Golden Habitat",
+  "Violet Frequency", "Emerald Dream", "Ivory Circuit", "Cosmic Archive",
+  "Sonic Relic", "Polygon Ritual", "Solana Vision", "Ether Canvas",
+];
+const categories = [
+  "Arte digital", "Fotografia", "Música", "Arte 3D", "Colecionáveis",
+  "Generativa", "Jogos", "Assinaturas", "Utilidade",
+];
+const networks = ["Ethereum", "Polygon", "Solana"] as const;
+const images = [
+  "emerald-ape-042.webp", "sage-nomad-009.webp", "neon-vessel-552.webp",
+  "cosmic-bloom-118.webp", "violet-nomad-314.webp", "ivory-baron-088.webp",
+  "golden-beat-207.webp", "golden-signal-160.webp",
+];
+const generatedNfts: Nft[] = names.map((name, index) => {
+  const number = 401 + index;
+  const category = categories[index % categories.length]!;
+  const network = networks[index % networks.length]!;
+  return {
+    id: `${name.toLowerCase().replaceAll(" ", "-")}-${number}`,
+    slug: `${name.toLowerCase().replaceAll(" ", "-")}-${number}`,
+    tokenId: `#${String(number).padStart(4, "0")}`,
+    name: `${name} #${number}`,
+    creator: ["Lia Nakamura", "Caio Luz", "Maya Torres", "Noah Silva"][index % 4]!,
+    collection: ["Jungle Genesis", "Kurio Signals", "Digital Rituals"][index % 3]!,
+    description: `Obra da coleção Kurio inspirada em ${category.toLowerCase()}.`,
+    price: (0.35 + (index % 12) * 0.21).toFixed(2),
+    oldPrice: index % 4 === 0 ? (0.65 + (index % 12) * 0.21).toFixed(2) : undefined,
+    image: asset(images[index % images.length]!),
+    alt: `${name}, NFT da coleção Kurio`,
+    rarity: index % 7 === 0 ? "RARO" : index % 11 === 0 ? "ÉPICO" : undefined,
+    category,
+    network,
+    stock: 2 + (index * 7) % 49,
+    createdAt: new Date(Date.UTC(2026, 9, 28 - index)).toISOString(),
+    featured: index % 8 === 0,
+    launch: index < 9,
+    trending: index % 3 === 0,
+    likes: 18 + index * 13,
+    version: 1,
+  };
+});
+
+export const nfts: Nft[] = [...featuredNfts, ...generatedNfts].map(
+  (nft, index) => ({
+    slug: nft.id,
+    creator: "Kurio Collective",
+    collection: "Jungle Genesis",
+    description: "Arte digital selecionada para a coleção KURIO.",
+    alt: `${nft.name}, NFT da coleção KURIO`,
+    createdAt: new Date(Date.UTC(2026, 9, 28 - index)).toISOString(),
+    featured: index < 4,
+    launch: index < 12,
+    trending: index % 3 === 0,
+    likes: 42 + index * 9,
+    ...nft,
+  }),
+);
 
 export const demoUser = {
   id: "collector-1",

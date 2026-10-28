@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearch } from "@tanstack/react-router";
 import { SlidersHorizontal, Search } from "lucide-react";
 import { useCatalog } from "../hooks/api";
@@ -11,21 +11,11 @@ export type HomeSearch = {
   category?: string;
   tab?: string;
   maxPrice?: string;
+  minPrice?: string;
   favorites?: boolean;
   sort?: string;
   page?: number;
 };
-const categories = [
-  ["Arte digital", 33],
-  ["Fotografia", 12],
-  ["Música", 65],
-  ["Arte 3D", 39],
-  ["Colecionáveis", 23],
-  ["Generativa", 17],
-  ["Jogos", 19],
-  ["Assinaturas", 13],
-  ["Utilidade", 18],
-] as const;
 const journalTitles = [
   "Como funciona a propriedade de NFTs",
   "10 artistas digitais para acompanhar",
@@ -47,6 +37,7 @@ export function HomePage() {
     category: params.category,
     tab: params.tab,
     maxPrice: params.maxPrice,
+    minPrice: params.minPrice,
     sort: params.sort,
     page: String(params.page ?? 1),
   });
@@ -54,56 +45,13 @@ export function HomePage() {
     const items = data?.items ?? [];
     if (!params.favorites) return items;
     try {
-      const state = JSON.parse(localStorage.getItem("kurio.mock.v1") ?? "{}");
-      return items.filter((item) => (state.favorites ?? []).includes(item.id));
+      const state = JSON.parse(localStorage.getItem("kurio.mock.v2") ?? "{}");
+      const favorites = state.favoritesByUser?.[state.session?.id] ?? [];
+      return items.filter((item) => favorites.includes(item.id));
     } catch {
       return items;
     }
   }, [data?.items, params.favorites]);
-  const displayItems = useMemo(() => {
-    if (
-      params.search ||
-      params.network ||
-      params.category ||
-      params.tab ||
-      params.maxPrice ||
-      params.favorites ||
-      params.sort ||
-      (params.page ?? 1) !== 1
-    )
-      return visibleItems;
-    const golden = visibleItems.find((item) => item.id === "golden-beat-207");
-    const signalIndex = visibleItems.findIndex(
-      (item) => item.id === "golden-signal-160",
-    );
-    if (!golden || signalIndex < 0) return visibleItems;
-    return [
-      ...visibleItems.slice(0, signalIndex),
-      golden,
-      ...visibleItems.slice(signalIndex),
-    ];
-  }, [params, visibleItems]);
-  const mobileItems = useMemo(() => {
-    if (
-      params.search ||
-      params.network ||
-      params.category ||
-      params.tab ||
-      params.maxPrice ||
-      params.favorites ||
-      params.sort
-    )
-      return visibleItems;
-    const order = [
-      "emerald-ape-042",
-      "sage-nomad-009",
-      "ivory-baron-088",
-      "golden-beat-207",
-    ];
-    return order
-      .map((id) => visibleItems.find((item) => item.id === id))
-      .filter((item): item is NonNullable<typeof item> => Boolean(item));
-  }, [params, visibleItems]);
   const updateSearch = (patch: Partial<HomeSearch>) =>
     void navigate({
       search: (old) => ({ ...old, ...patch, page: patch.page ?? 1 }),
@@ -112,6 +60,23 @@ export function HomePage() {
     event.preventDefault();
     updateSearch({ search: term || undefined });
   };
+  useEffect(() => {
+    if (term === (params.search ?? "")) return;
+    const timeout = window.setTimeout(
+      () =>
+        void navigate({
+          search: (old) => ({
+            ...old,
+            search: term || undefined,
+            page: 1,
+          }),
+        }),
+      300,
+    );
+    return () => window.clearTimeout(timeout);
+  }, [navigate, term, params.search]);
+  const facetCategories = Object.entries(data?.facets.categories ?? {});
+  const facetNetworks = Object.entries(data?.facets.networks ?? {});
   const tabs = [
     [undefined, "Todos os NFTs"],
     ["new", "Novos lançamentos"],
@@ -126,6 +91,7 @@ export function HomePage() {
             <label>
               <Search size={20} />
               <input
+                type="search"
                 value={term}
                 onChange={(event) => setTerm(event.target.value)}
                 placeholder="Explorar coleções"
@@ -218,14 +184,11 @@ export function HomePage() {
             <aside className="kurio-filter-panel">
               <h2>Coleções</h2>
               <div className="kurio-category-list">
-                {categories.map(([name, count]) => (
+                {facetCategories.map(([name, count]) => (
                   <button
                     key={name}
                     className={
-                      params.category === name ||
-                      (!params.category && name === "Arte digital")
-                        ? "active"
-                        : ""
+                      params.category === name ? "active" : ""
                     }
                     onClick={() =>
                       updateSearch({
@@ -260,11 +223,7 @@ export function HomePage() {
               </button>
               <h3>Rede</h3>
               <div className="kurio-network-list">
-                {[
-                  ["Ethereum", 119],
-                  ["Polygon", 78],
-                  ["Solana", 86],
-                ].map(([name, count]) => (
+                {facetNetworks.map(([name, count]) => (
                   <button
                     key={name}
                     className={
@@ -297,6 +256,24 @@ export function HomePage() {
             </article>
           </div>
           <div className="kurio-catalog-content">
+            <form onSubmit={submit} className="desktop-only kurio-desktop-search">
+              <label htmlFor="desktop-catalog-search">Buscar no catálogo</label>
+              <div>
+                <Search size={20} aria-hidden="true" />
+                <input
+                  id="desktop-catalog-search"
+                  type="search"
+                  value={term}
+                  onChange={(event) => setTerm(event.target.value)}
+                  placeholder="Nome, criador, coleção, categoria ou rede"
+                />
+                {term && (
+                  <button type="button" onClick={() => setTerm("")}>
+                    Limpar
+                  </button>
+                )}
+              </div>
+            </form>
             <div className="kurio-catalog-toolbar">
               <div className="kurio-tabs" role="tablist" aria-label="Catálogo">
                 {tabs.map(([value, label]) => (
@@ -348,22 +325,15 @@ export function HomePage() {
                   Tentar novamente
                 </button>
               </div>
-            ) : displayItems.length ? (
+            ) : visibleItems.length ? (
               <>
-                <div className="kurio-nft-grid desktop-only">
-                  {displayItems.map((nft, index) => (
+                <p className="kurio-result-count" aria-live="polite">
+                  {data?.total ?? 0} resultado(s)
+                </p>
+                <div className="kurio-nft-grid">
+                  {visibleItems.map((nft, index) => (
                     <NftCard
                       key={`${nft.id}-${index}`}
-                      nft={nft}
-                      badge={nft.id === "ivory-baron-088" ? "RARO" : null}
-                      stagger={index % 2 === 1}
-                    />
-                  ))}
-                </div>
-                <div className="kurio-nft-grid mobile-only">
-                  {mobileItems.map((nft, index) => (
-                    <NftCard
-                      key={nft.id}
                       nft={nft}
                       badge={nft.id === "ivory-baron-088" ? "RARO" : null}
                       stagger={index % 2 === 1}
@@ -375,10 +345,19 @@ export function HomePage() {
               <p className="py-20 text-center muted">Nenhum NFT encontrado.</p>
             )}
             <nav
-              className="desktop-only kurio-pagination"
+              className="kurio-pagination"
               aria-label="Paginação"
             >
-              {[1, 2, 3, 4].map((page) => (
+              <button
+                aria-label="Página anterior"
+                disabled={(params.page ?? 1) <= 1}
+                onClick={() =>
+                  updateSearch({ page: Math.max(1, (params.page ?? 1) - 1) })
+                }
+              >
+                ‹
+              </button>
+              {Array.from({ length: data?.totalPages ?? 1 }, (_, index) => index + 1).map((page) => (
                 <button
                   key={page}
                   onClick={() => updateSearch({ page })}
@@ -393,8 +372,9 @@ export function HomePage() {
               <button
                 aria-label="Próxima página"
                 onClick={() =>
-                  updateSearch({ page: Math.min(4, (params.page ?? 1) + 1) })
+                    updateSearch({ page: Math.min(data?.totalPages ?? 1, (params.page ?? 1) + 1) })
                 }
+                disabled={(params.page ?? 1) >= (data?.totalPages ?? 1)}
               >
                 ›
               </button>
