@@ -5,7 +5,7 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig(({ mode }) => ({
   base: mode === "production" ? "/kurio-nft/" : "/",
   plugins: [react(), tailwindcss()],
-  server: { port: 4173 },
-  preview: { port: 4173 },
+  server: { port: 4174 },
+  preview: { port: 4174 },
   build: { sourcemap: true },
 }));
