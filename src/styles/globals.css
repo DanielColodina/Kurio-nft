@@ -1,0 +1,978 @@
+@import "tailwindcss";
+
+:root {
+  color-scheme: dark;
+  --bg: #140d0a;
+  --surface: #241612;
+  --surface-2: #2d1a15;
+  --brown: #38220f;
+  --accent: #d98e49;
+  --accent-soft: #b88758;
+  --text: #f5f1eb;
+  --muted: #c4a27c;
+  --line: #5b331d;
+  font-family: "Courier New", Courier, monospace;
+  font-synthesis: none;
+  background: var(--bg);
+  color: var(--text);
+}
+* {
+  box-sizing: border-box;
+}
+html {
+  background: var(--bg);
+  scroll-behavior: smooth;
+}
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: var(--bg);
+}
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+button {
+  cursor: pointer;
+}
+img {
+  display: block;
+  max-width: 100%;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+.container {
+  width: min(1200px, calc(100% - 48px));
+  margin-inline: auto;
+}
+.surface {
+  background: var(--surface);
+}
+.muted {
+  color: var(--muted);
+}
+.accent {
+  color: var(--accent);
+}
+.btn {
+  min-height: 42px;
+  border: 1px solid var(--accent);
+  padding: 0 22px;
+  background: transparent;
+  color: var(--accent);
+  font-weight: 700;
+  transition: 0.2s ease;
+}
+.btn:hover {
+  background: #3a2116;
+}
+.btn-primary {
+  background: var(--accent);
+  color: #150d09;
+}
+.btn-primary:hover {
+  background: #ef9d51;
+}
+.field {
+  width: 100%;
+  height: 42px;
+  padding: 0 14px;
+  color: var(--text);
+  background: transparent;
+  border: 1px solid var(--line);
+}
+.field::placeholder {
+  color: #a67c50;
+}
+.section-title {
+  font-size: 18px;
+  color: var(--accent);
+  font-weight: 700;
+  border-bottom: 1px solid var(--brown);
+  padding-bottom: 10px;
+}
+.price {
+  color: var(--accent);
+  font-weight: 800;
+}
+.skeleton {
+  border-radius: 6px;
+  background: linear-gradient(90deg, #241612 20%, #38231d 40%, #241612 60%);
+  background-size: 300% 100%;
+  animation: shimmer 1.4s infinite linear;
+}
+
+/* Home — measured against the original 1440px and 414px frames. */
+.kurio-hero-section {
+  margin-top: 32px;
+}
+.kurio-hero {
+  position: relative;
+  height: 450px;
+}
+.kurio-hero-copy {
+  position: absolute;
+  z-index: 2;
+  left: 40px;
+  top: 43px;
+}
+.kurio-eyebrow {
+  margin: 0 0 18px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+.kurio-hero h1 {
+  margin: 0;
+  font-size: 40px;
+  line-height: 1.42;
+  letter-spacing: 0.5px;
+  font-weight: 800;
+}
+.kurio-hero-description {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.65;
+}
+.kurio-hero-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 28px;
+  width: 142px;
+  height: 42px;
+  color: #140d0a;
+  background: var(--accent);
+  font-size: 13px;
+  font-weight: 800;
+}
+.kurio-hero-art {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 450px;
+  height: 450px;
+}
+.kurio-hero-main {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 24px;
+}
+.kurio-hero-dots {
+  position: absolute;
+  left: 600px;
+  bottom: 42px;
+  display: flex;
+  gap: 9px;
+}
+.kurio-hero-dots i {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--accent);
+}
+.kurio-catalog-section {
+  margin-top: 94px;
+}
+.kurio-catalog-layout {
+  display: grid;
+  grid-template-columns: 310px minmax(0, 1fr);
+  gap: 47px;
+  align-items: start;
+}
+.kurio-sidebar-column {
+  min-width: 0;
+}
+.kurio-filter-panel {
+  background: var(--surface);
+  padding: 24px 22px 25px;
+}
+.kurio-filter-panel h2 {
+  margin: 0 0 18px;
+  font-size: 16px;
+}
+.kurio-filter-panel h3 {
+  margin: 34px 0 9px;
+  font-size: 16px;
+}
+.kurio-category-list,
+.kurio-network-list {
+  display: grid;
+  gap: 0;
+}
+.kurio-category-list button,
+.kurio-network-list button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 39px;
+  padding: 0 8px;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: 13px;
+  text-align: left;
+}
+.kurio-category-list button.active,
+.kurio-category-list button:hover,
+.kurio-network-list button.active,
+.kurio-network-list button:hover {
+  color: var(--accent);
+}
+.kurio-filter-panel input[type="range"] {
+  width: 100%;
+  accent-color: var(--accent);
+}
+.kurio-filter-panel > p {
+  margin: 9px 8px 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+.kurio-apply {
+  margin: 13px 0 0 8px;
+  height: 35px;
+  padding: 0 13px;
+  border: 0;
+  background: var(--accent);
+  color: #140d0a;
+  font-weight: 800;
+}
+.kurio-featured-card {
+  margin-top: 24px;
+  background: var(--surface);
+  text-align: center;
+  overflow: hidden;
+}
+.kurio-featured-card h2 {
+  margin: 24px 0 16px;
+  color: var(--accent);
+  font-size: 22px;
+}
+.kurio-featured-card h3 {
+  margin: 0 0 13px;
+  font-size: 20px;
+}
+.kurio-featured-card img {
+  width: 100%;
+  aspect-ratio: 1/1.18;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: 20px 20px 0 0;
+}
+.kurio-catalog-toolbar {
+  height: 32px;
+  display: flex;
+  align-items: flex-start;
+  border-bottom: 1px solid var(--brown);
+}
+.kurio-tabs {
+  display: flex;
+  gap: 28px;
+  white-space: nowrap;
+}
+.kurio-tabs button {
+  height: 32px;
+  padding: 0 0 9px;
+  border: 0;
+  background: none;
+  color: var(--text);
+  font-size: 12px;
+}
+.kurio-tabs button.active {
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent);
+}
+.kurio-sort-label {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  color: var(--muted);
+  font-size: 11px;
+  white-space: nowrap;
+}
+.kurio-sort-label select {
+  border: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 11px;
+}
+.kurio-nft-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: 38px;
+  row-gap: 125px;
+  margin-top: 27px;
+}
+.kurio-nft-card {
+  min-width: 0;
+}
+.kurio-nft-image-wrap {
+  position: relative;
+  padding: 4px;
+  background: var(--surface);
+}
+.kurio-nft-image-wrap img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 10px;
+}
+.kurio-nft-meta {
+  padding-top: 11px;
+  font-size: 14px;
+  line-height: 1.35;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.kurio-nft-meta > a {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.kurio-nft-meta strong {
+  color: var(--accent);
+  font-size: 16px;
+}
+.kurio-nft-meta del {
+  margin-left: 9px;
+  color: var(--muted);
+  font-size: 14px;
+}
+.kurio-rarity {
+  display: none;
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: 10px 17px;
+  background: var(--accent);
+  color: #140d0a;
+  font-size: 12px;
+}
+.kurio-pagination {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 83px;
+}
+.kurio-pagination button {
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--brown);
+  background: transparent;
+  color: var(--text);
+}
+.kurio-pagination button.active {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #140d0a;
+}
+.kurio-promos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-top: 109px;
+}
+.kurio-promos article {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 250px;
+  background: var(--surface);
+  overflow: hidden;
+}
+.kurio-promos img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 18px;
+}
+.kurio-promos article > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  text-align: center;
+}
+.kurio-promos b {
+  font-size: 17px;
+  line-height: 1.3;
+}
+.kurio-promos p {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.kurio-promos a {
+  padding: 10px 20px;
+  background: var(--accent);
+  color: #140d0a;
+  font-size: 12px;
+  font-weight: 800;
+}
+.kurio-journal {
+  margin-top: 98px;
+  text-align: center;
+}
+.kurio-journal > h2 {
+  margin: 0;
+  font-size: 25px;
+}
+.kurio-journal > p {
+  margin: 15px 0 36px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.kurio-journal > div {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  text-align: left;
+}
+.kurio-journal article {
+  background: var(--surface);
+}
+.kurio-journal article > img {
+  width: 100%;
+  aspect-ratio: 1.45;
+  object-fit: cover;
+}
+.kurio-journal article > div {
+  padding: 15px;
+}
+.kurio-journal small {
+  color: var(--muted);
+  font-size: 10px;
+}
+.kurio-journal h3 {
+  min-height: 42px;
+  margin: 12px 0 7px;
+  font-size: 14px;
+}
+.kurio-journal article p {
+  min-height: 45px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.4;
+}
+.kurio-journal article a {
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 800;
+}
+@keyframes shimmer {
+  to {
+    background-position: -150% 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+@media (max-width: 700px) {
+  .kurio-detail-mobile-controls {
+    margin-bottom: 2px;
+  }
+  .kurio-detail-layout {
+    gap: 0;
+  }
+  .kurio-detail-main-image img {
+    width: 100%;
+    height: 440px;
+    aspect-ratio: auto;
+    object-fit: cover;
+  }
+  .kurio-detail-panel {
+    z-index: 2;
+    min-height: 503px;
+    margin-top: -112px;
+  }
+  .kurio-cart-page {
+    margin-top: 32px;
+  }
+  .kurio-cart-heading {
+    position: relative;
+    margin-bottom: 16px;
+    justify-content: center;
+  }
+  .kurio-cart-heading > a {
+    position: absolute;
+    left: 24px;
+  }
+  .kurio-cart-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+    min-width: 0;
+  }
+  .kurio-cart-lines {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    min-width: 0;
+    gap: 20px;
+  }
+  .kurio-cart-lines > * {
+    margin-top: 0 !important;
+    margin-block-start: 0 !important;
+  }
+  .kurio-cart-line {
+    display: block;
+    width: calc(100% - 8px);
+    height: 100px;
+    margin-left: 4px;
+    padding: 0;
+    border-radius: 14px;
+  }
+  .kurio-cart-product {
+    align-items: flex-start;
+    width: 100%;
+    height: 100%;
+    gap: 9px;
+    padding-right: 120px;
+  }
+  .kurio-cart-product img {
+    width: 100px;
+    height: 100px;
+    flex: 0 0 100px;
+    border-radius: 12px;
+  }
+  .kurio-cart-product b {
+    font-size: 14px;
+  }
+  .kurio-cart-product p {
+    margin-top: 4px;
+  }
+  .kurio-cart-product > div {
+    margin-top: 12px;
+  }
+  .kurio-cart-quantity {
+    position: absolute;
+    top: 34px;
+    right: 14px;
+    transform: scale(0.85);
+    transform-origin: right center;
+  }
+  .kurio-cart-line-total {
+    left: 109px;
+    bottom: 13px;
+    margin: 0;
+  }
+  .kurio-cart-remove {
+    right: 13px;
+    bottom: 12px;
+    margin: 0;
+  }
+  .kurio-cart-summary {
+    min-width: 0;
+    margin-top: 0;
+    padding-top: 24px;
+  }
+  body {
+    padding-bottom: calc(82px + env(safe-area-inset-bottom));
+  }
+  .container {
+    width: calc(100% - 48px);
+  }
+  .desktop-only {
+    display: none !important;
+  }
+  .kurio-mobile-search {
+    padding-top: 40px;
+  }
+  .kurio-search-form {
+    display: flex;
+    gap: 8px;
+  }
+  .kurio-search-form label {
+    height: 45px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    padding: 0 14px;
+    border-radius: 11px;
+    background: var(--surface);
+    color: var(--accent);
+  }
+  .kurio-search-form input {
+    width: 100%;
+    min-width: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--accent);
+  }
+  .kurio-search-form input::placeholder {
+    color: #bc8e58;
+  }
+  .kurio-search-form > button {
+    width: 46px;
+    height: 45px;
+    display: grid;
+    place-items: center;
+    border: 0;
+    border-radius: 12px;
+    background: var(--accent);
+    color: #140d0a;
+  }
+  .kurio-mobile-filter-panel {
+    position: absolute;
+    z-index: 30;
+    right: 24px;
+    top: 91px;
+    display: grid;
+    width: 190px;
+    padding: 10px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--surface);
+  }
+  .kurio-mobile-filter-panel button {
+    padding: 10px;
+    border: 0;
+    background: transparent;
+    color: var(--text);
+    text-transform: capitalize;
+    text-align: left;
+  }
+  .kurio-hero-section {
+    margin-top: 16px;
+  }
+  .kurio-hero {
+    height: 190px;
+    overflow: hidden;
+    border-radius: 30px;
+    background: radial-gradient(
+      circle at 30% 45%,
+      #8f603d 0,
+      #654021 40%,
+      #38220f 72%
+    );
+  }
+  .kurio-hero-copy {
+    left: 16px;
+    top: 10px;
+  }
+  .kurio-eyebrow {
+    margin-bottom: 8px;
+    font-size: 12px;
+  }
+  .kurio-hero h1 {
+    font-size: 19px;
+    line-height: 1.55;
+    letter-spacing: 0;
+  }
+  .kurio-hero-description {
+    margin-top: 5px;
+    font-size: 12px;
+    line-height: 1.45;
+  }
+  .kurio-hero-cta {
+    width: auto;
+    height: auto;
+    margin-top: 1px;
+    background: transparent;
+    color: var(--accent);
+    font-size: 12px;
+  }
+  .kurio-hero-art {
+    right: 16px;
+    top: 11px;
+    width: 138px;
+    height: 138px;
+  }
+  .kurio-hero-main {
+    border-radius: 18px;
+  }
+  .kurio-hero-secondary {
+    position: absolute;
+    left: 14px;
+    bottom: -8px;
+    width: 69px;
+    height: 55px;
+    object-fit: cover;
+    border-radius: 15px;
+    border: 2px solid #f1e2bd;
+  }
+  .kurio-hero-dots {
+    left: 166px;
+    bottom: 6px;
+    gap: 7px;
+  }
+  .kurio-hero-dots i {
+    width: 7px;
+    height: 7px;
+  }
+  .kurio-catalog-section {
+    margin-top: 15px;
+  }
+  .kurio-catalog-layout {
+    display: block;
+  }
+  .kurio-catalog-toolbar {
+    height: 22px;
+    overflow-x: auto;
+    border-bottom: 0;
+  }
+  .kurio-tabs {
+    gap: 12px;
+  }
+  .kurio-tabs button {
+    height: 22px;
+    padding-bottom: 3px;
+    font-size: 15px;
+  }
+  .kurio-nft-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 16px;
+    row-gap: 30px;
+    margin-top: 8px;
+    padding-bottom: 34px;
+  }
+  .kurio-stagger {
+    transform: translateY(32px);
+  }
+  .kurio-nft-image-wrap {
+    height: 198px;
+    padding: 12px 4px 16px;
+    border-radius: 20px;
+  }
+  .kurio-nft-image-wrap img {
+    height: 170px;
+    object-fit: cover;
+    border-radius: 16px;
+  }
+  .kurio-nft-meta {
+    padding: 12px 8px 0;
+    font-size: 15px;
+    line-height: 1.25;
+  }
+  .kurio-nft-meta strong {
+    display: inline-block;
+    font-size: 17px;
+  }
+  .kurio-nft-meta del {
+    display: none;
+  }
+  .kurio-favorite {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    width: 30px;
+    height: 30px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 1px solid #8f532b;
+    border-radius: 50%;
+    background: var(--surface);
+    color: var(--accent);
+  }
+  .kurio-rarity {
+    display: block;
+    padding: 9px 12px;
+  }
+}
+
+@media (min-width: 701px) {
+  .kurio-detail-layout {
+    grid-template-columns: 575px minmax(0, 1fr);
+    gap: 32px;
+  }
+  .kurio-detail-panel {
+    background: transparent;
+  }
+  .kurio-auth-page {
+    position: relative;
+    display: block;
+    min-height: 1911px;
+    padding: 0;
+    overflow: hidden;
+  }
+  .kurio-auth-backdrop {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .kurio-auth-hero {
+    position: relative;
+    width: 1200px;
+    height: 450px;
+    margin: 10px auto 0;
+  }
+  .kurio-auth-hero > div {
+    position: absolute;
+    z-index: 1;
+    top: 62px;
+    left: 40px;
+    width: 580px;
+  }
+  .kurio-auth-hero p {
+    margin: 0 0 12px;
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.13em;
+  }
+  .kurio-auth-hero h2 {
+    margin: 0;
+    font-size: 42px;
+    line-height: 1.06;
+  }
+  .kurio-auth-hero span {
+    display: block;
+    width: 430px;
+    margin-top: 18px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.65;
+  }
+  .kurio-auth-hero b {
+    display: grid;
+    place-items: center;
+    width: 142px;
+    height: 42px;
+    margin-top: 28px;
+    background: var(--accent);
+    color: #140d0a;
+    font-size: 12px;
+  }
+  .kurio-auth-hero img {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 450px;
+    height: 450px;
+    object-fit: cover;
+  }
+  .kurio-auth-market {
+    display: grid;
+    grid-template-columns: 310px 1fr;
+    gap: 47px;
+    width: 1200px;
+    margin: 50px auto 0;
+  }
+  .kurio-auth-market aside {
+    display: flex;
+    flex-direction: column;
+    min-height: 733px;
+    padding: 24px 22px;
+    background: var(--surface);
+  }
+  .kurio-auth-market aside h3 {
+    margin: 0 0 14px;
+    color: var(--accent);
+    font-size: 14px;
+  }
+  .kurio-auth-market aside h3:nth-of-type(2) {
+    margin-top: 34px;
+  }
+  .kurio-auth-market aside span {
+    height: 39px;
+    padding: 10px 8px;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .kurio-auth-market header {
+    display: flex;
+    justify-content: space-between;
+    height: 32px;
+    border-bottom: 1px solid var(--brown);
+    font-size: 12px;
+  }
+  .kurio-auth-market header b {
+    color: var(--accent);
+  }
+  .kurio-auth-market header span {
+    color: var(--muted);
+  }
+  .kurio-auth-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 18px;
+    row-gap: 112px;
+    margin-top: 42px;
+  }
+  .kurio-auth-grid article {
+    overflow: hidden;
+    background: var(--surface);
+  }
+  .kurio-auth-grid img {
+    width: 100%;
+    height: 236px;
+    object-fit: cover;
+  }
+  .kurio-auth-grid b,
+  .kurio-auth-grid span {
+    display: block;
+    padding: 10px 12px 0;
+    font-size: 12px;
+  }
+  .kurio-auth-grid span {
+    padding-top: 4px;
+    padding-bottom: 12px;
+    color: var(--accent);
+  }
+  .kurio-auth-modal {
+    position: relative;
+    z-index: 2;
+    width: 500px;
+    margin: 79px auto 0;
+  }
+  .kurio-auth-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    color: var(--accent);
+  }
+  .kurio-auth-intro {
+    width: 330px;
+    margin: -2px auto 29px;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.3;
+    text-align: center;
+  }
+  .kurio-auth-submit {
+    height: 42px;
+    margin-top: 3px;
+  }
+  .kurio-auth-divider {
+    margin-top: 26px;
+    margin-bottom: 14px;
+  }
+  .kurio-auth-modal form,
+  .kurio-auth-divider,
+  .kurio-auth-modal > button {
+    width: 340px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+}
+@media (min-width: 701px) {
+  .mobile-only {
+    display: none !important;
+  }
+}

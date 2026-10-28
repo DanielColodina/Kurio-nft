@@ -1,0 +1,111 @@
+import type { Nft } from "../types";
+
+const asset = (file: string) =>
+  `${import.meta.env.BASE_URL}assets/nfts/${file}`;
+
+export const nfts: Nft[] = [
+  {
+    id: "emerald-ape-042",
+    tokenId: "#0042",
+    name: "Emerald Ape #042",
+    price: "1.19",
+    image: asset("emerald-ape-042.webp"),
+    rarity: "RARO",
+    category: "Arte digital",
+    network: "Ethereum",
+    stock: 50,
+    version: 1,
+  },
+  {
+    id: "sage-nomad-009",
+    tokenId: "#0009",
+    name: "Sage Nomad #009",
+    price: "1.69",
+    image: asset("sage-nomad-009.webp"),
+    category: "Colecionáveis",
+    network: "Polygon",
+    stock: 10,
+    version: 1,
+  },
+  {
+    id: "neon-vessel-552",
+    tokenId: "#0552",
+    name: "Neon Vessel #552",
+    price: "1.99",
+    oldPrice: "2.29",
+    image: asset("neon-vessel-552.webp"),
+    category: "Arte digital",
+    network: "Ethereum",
+    stock: 8,
+    version: 1,
+  },
+  {
+    id: "cosmic-bloom-118",
+    tokenId: "#0118",
+    name: "Cosmic Bloom #118",
+    price: "1.29",
+    image: asset("cosmic-bloom-118.webp"),
+    category: "Generativa",
+    network: "Solana",
+    stock: 12,
+    version: 1,
+  },
+  {
+    id: "violet-nomad-314",
+    tokenId: "#0314",
+    name: "Violet Nomad #314",
+    price: "1.39",
+    image: asset("violet-nomad-314.webp"),
+    category: "Colecionáveis",
+    network: "Polygon",
+    stock: 10,
+    version: 1,
+  },
+  {
+    id: "ivory-baron-088",
+    tokenId: "#0088",
+    name: "Ivory Baron #088",
+    price: "1.79",
+    image: asset("ivory-baron-088.webp"),
+    category: "Arte digital",
+    network: "Ethereum",
+    stock: 10,
+    version: 1,
+  },
+  {
+    id: "golden-beat-207",
+    tokenId: "#0207",
+    name: "Golden Beat #207",
+    price: "0.99",
+    image: asset("golden-beat-207.webp"),
+    category: "Música",
+    network: "Solana",
+    stock: 50,
+    version: 1,
+  },
+  {
+    id: "golden-signal-160",
+    tokenId: "#0160",
+    name: "Golden Signal #160",
+    price: "0.39",
+    image: asset("golden-signal-160.webp"),
+    category: "Música",
+    network: "Polygon",
+    stock: 25,
+    version: 1,
+  },
+];
+
+export const demoUser = {
+  id: "collector-1",
+  name: "Colecionador Kurio",
+  email: "contato@email.com",
+  ens: "nova.kurio.eth",
+};
+
+export const secondDemoUser = {
+  id: "collector-2",
+  name: "Curadora Jungle",
+  email: "curadora@email.com",
+  ens: "jungle.kurio.eth",
+};

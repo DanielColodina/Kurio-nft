@@ -1,0 +1,10 @@
+node_modules/
+dist/
+test-results/
+reports/playwright/
+reports/lighthouse/
+*.tsbuildinfo
+.env*
+!.env.example
+.DS_Store
+Thumbs.db
