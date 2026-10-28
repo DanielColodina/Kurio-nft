@@ -1,28 +1,29 @@
-# Relatório de testes
+# Testes
 
-Validação executada em 28/10/2026 nos projetos Chromium desktop (1440×1080) e mobile (390×844).
+Última execução: 28/10/2026, Chromium, Windows 11, Node.js 22.
 
-A suíte E2E cobre busca e URL, ordenação e âncora, detalhe inexistente, carrinho persistente, login e sessão, proteção de rotas, cupom válido e inválido, conflito de cadastro, checkout idempotente, pagamento recusado e atualização por Socket.IO. O relatório HTML temporário não é versionado.
+## E2E
 
-Resultado final: **21 testes aprovados e 1 ignorado**. O caso ignorado repete no projeto mobile uma asserção de âncora e ordenação já validada no desktop.
+```text
+23 passed
+1 skipped
+```
 
-A regressão visual cobre home, detalhe, carrinho, checkout, confirmação, login, cadastro, perfil e carteiras em desktop e mobile. Os snapshots verificam regressões da implementação; a auditoria em `reports/reference-visual-audit` compara separadamente a interface com os PNGs originais.
+O caso ignorado é a âncora do diário no projeto mobile, pois a seção existe somente na composição desktop. A mesma ordenação é exercitada no desktop.
 
-Resultado final da regressão: **18/18 aprovados**.
+A suíte cobre busca e URL, detalhe direto e inexistente, carrinho após refresh, login e sessão, proteção e retorno de rota privada, cupom inválido e válido, conflito de cadastro, checkout confirmado, pagamento recusado, atualização de preço por Socket.IO e persistência de perfil e senha. Cada teste restaura o estado do MSW antes de começar.
 
-Diferenças medidas contra as referências originais após as correções:
+## Regressão visual
 
-| Tela | Diferença |
-|---|---:|
-| Home desktop | 16,19% |
-| Home mobile | 23,00% |
-| Detalhe desktop/mobile | 16,43% / 23,29% |
-| Carrinho desktop/mobile | 19,55% / 25,74% |
-| Checkout desktop/mobile | 8,68% / 10,20% |
-| Confirmação desktop | 3,40% |
-| Login desktop/mobile | 18,72% / 10,21% |
-| Cadastro desktop/mobile | 17,83% / 10,42% |
-| Perfil desktop | 3,64% |
-| Carteiras desktop | 4,45% |
+```text
+18 passed
+```
 
-Esses números são reportados sem alegar equivalência pixel-perfect onde a comparação ainda aponta diferenças.
+As baselines versionadas cobrem home, detalhe, carrinho, checkout, login, cadastro, perfil, carteiras e confirmação nos projetos desktop e mobile. Elas servem para detectar regressão entre commits; não são apresentadas como comparação automática com os arquivos-fonte do layout.
+
+Comandos usados:
+
+```bash
+npm run test:e2e
+npm run test:visual
+```
