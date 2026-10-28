@@ -30,6 +30,7 @@ export function HomePage() {
   const navigate = useNavigate({ from: "/" });
   const [term, setTerm] = useState(params.search ?? "");
   const [maxPrice, setMaxPrice] = useState(params.maxPrice ?? "12.30");
+  const [minPrice, setMinPrice] = useState(params.minPrice ?? "0.02");
   const [filtersOpen, setFiltersOpen] = useState(false);
   const { data, isLoading, isError, refetch } = useCatalog({
     search: params.search,
@@ -109,14 +110,28 @@ export function HomePage() {
           </form>
           {filtersOpen && (
             <div className="kurio-mobile-filter-panel">
-              {["ethereum", "polygon", "solana"].map((network) => (
-                <button key={network} onClick={() => updateSearch({ network })}>
-                  {network}
+              <b>Redes</b>
+              {facetNetworks.map(([network, count]) => (
+                <button key={network} onClick={() => updateSearch({ network: network.toLowerCase() })}>
+                  {network} ({count})
+                </button>
+              ))}
+              <b>Categorias</b>
+              {facetCategories.map(([category, count]) => (
+                <button key={category} onClick={() => updateSearch({ category })}>
+                  {category} ({count})
                 </button>
               ))}
               <button
                 onClick={() =>
-                  updateSearch({ network: undefined, category: undefined })
+                  updateSearch({
+                    network: undefined,
+                    category: undefined,
+                    minPrice: undefined,
+                    maxPrice: undefined,
+                    tab: undefined,
+                    sort: undefined,
+                  })
                 }
               >
                 Limpar
@@ -202,6 +217,16 @@ export function HomePage() {
                 ))}
               </div>
               <h3>Faixa de preço</h3>
+              <label className="kurio-price-input">
+                Mínimo
+                <input
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  value={minPrice}
+                  onChange={(event) => setMinPrice(event.target.value)}
+                />
+              </label>
               <input
                 type="range"
                 min="0.02"
@@ -217,7 +242,7 @@ export function HomePage() {
               </p>
               <button
                 className="kurio-apply"
-                onClick={() => updateSearch({ maxPrice })}
+                onClick={() => updateSearch({ minPrice, maxPrice })}
               >
                 Aplicar
               </button>
@@ -309,6 +334,31 @@ export function HomePage() {
                 </select>
               </label>
             </div>
+            {(params.search || params.network || params.category || params.minPrice || params.maxPrice || params.tab || params.sort) && (
+              <div className="kurio-active-filters" aria-label="Filtros ativos">
+                {[
+                  params.search && `Busca: ${params.search}`,
+                  params.category,
+                  params.network,
+                  params.minPrice && `Mín. ${params.minPrice} ETH`,
+                  params.maxPrice && `Máx. ${params.maxPrice} ETH`,
+                ].filter(Boolean).map((label) => <span key={String(label)}>{label}</span>)}
+                <button
+                  onClick={() => {
+                    setTerm("");
+                    setMinPrice("0.02");
+                    setMaxPrice("12.30");
+                    updateSearch({
+                      search: undefined, network: undefined, category: undefined,
+                      minPrice: undefined, maxPrice: undefined, tab: undefined,
+                      sort: undefined,
+                    });
+                  }}
+                >
+                  Limpar filtros
+                </button>
+              </div>
+            )}
             {isLoading ? (
               <div className="kurio-nft-grid">
                 {Array.from({ length: 9 }, (_, index) => (

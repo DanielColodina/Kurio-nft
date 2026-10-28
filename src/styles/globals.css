@@ -325,6 +325,40 @@ a {
   color: var(--muted);
   font-size: 13px;
 }
+.kurio-price-input {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 12px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.kurio-price-input input {
+  width: 100%;
+  min-height: 40px;
+  padding: 0 10px;
+  border: 1px solid var(--brown);
+  background: transparent;
+  color: var(--text);
+}
+.kurio-active-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+.kurio-active-filters span,
+.kurio-active-filters button {
+  min-height: 36px;
+  padding: 8px 12px;
+  border: 1px solid var(--brown);
+  border-radius: 999px;
+  color: var(--text);
+  font-size: 12px;
+}
+.kurio-active-filters button {
+  color: var(--accent);
+}
 .kurio-desktop-search {
   margin-bottom: 18px;
 }
