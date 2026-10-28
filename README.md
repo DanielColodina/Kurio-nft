@@ -11,7 +11,6 @@ npm install
 npm run dev
 ```
 
-A aplicação abre em `http://localhost:4174`. O backend de demonstração roda no navegador com MSW e persiste o estado no `localStorage`.
 
 Contas de teste:
 
@@ -30,7 +29,7 @@ npm run audit:reference
 npm run lighthouse
 ```
 
-A rota exigida pelo desafio continua disponível em `http://localhost:4174/?sort=price_asc#diario`.
+
 
 ## Cenários simulados
 
