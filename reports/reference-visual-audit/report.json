@@ -1,0 +1,227 @@
+[
+  {
+    "case": "home-desktop",
+    "reference": "C:\\Users\\danie\\OneDrive\\Área de Trabalho\\Jungle\\Frontend Challenge\\Desktop\\Início.png",
+    "referenceSize": [
+      1440,
+      3668
+    ],
+    "actualRenderedSize": [
+      1440,
+      3639
+    ],
+    "pixelDifferenceOver30Pct": 16.19,
+    "meanAbsoluteChannelDifference": 18.94,
+    "errors": []
+  },
+  {
+    "case": "detail-desktop",
+    "reference": "C:\\Users\\danie\\OneDrive\\Área de Trabalho\\Jungle\\Frontend Challenge (1)\\Desktop\\Detalhes do NFT.png",
+    "referenceSize": [
+      1440,
+      2246
+    ],
+    "actualRenderedSize": [
+      1440,
+      2216
+    ],
+    "pixelDifferenceOver30Pct": 16.43,
+    "meanAbsoluteChannelDifference": 20.89,
+    "errors": []
+  },
+  {
+    "case": "cart-desktop",
+    "reference": "C:\\Users\\danie\\OneDrive\\Área de Trabalho\\Jungle\\Frontend Challenge (2)\\Desktop\\Carrinho de NFTs.png",
+    "referenceSize": [
+      1440,
+      1754
+    ],
+    "actualRenderedSize": [
+      1440,
+      1781
+    ],
+    "pixelDifferenceOver30Pct": 19.55,
+    "meanAbsoluteChannelDifference": 28.26,
+    "errors": []
+  },
+  {
+    "case": "checkout-desktop",
+    "reference": "C:\\Users\\danie\\OneDrive\\Área de Trabalho\\Jungle\\Frontend Challenge (3)\\Desktop\\Pagamento.png",
+    "referenceSize": [
+      1440,
+      1657
+    ],
+    "actualRenderedSize": [
+      1440,
+      1486
+    ],
+    "pixelDifferenceOver30Pct": 8.68,
+    "meanAbsoluteChannelDifference": 12.67,
+    "errors": []
+  },
+  {
+    "case": "confirmation-desktop",
+    "reference": "C:\\Users\\danie\\OneDrive\\Área de Trabalho\\Jungle\\Frontend Challenge (4)\\Desktop\\Confirmação de Pedido.png",
+    "referenceSize": [
+      1440,
+      1657
+    ],
+    "actualRenderedSize": [
+      1440,
+      1003
+    ],
+    "pixelDifferenceOver30Pct": 3.4,
+    "meanAbsoluteChannelDifference": 4.09,
+    "errors": []
+  },
+  {
+    "case": "login-desktop",
+    "reference": "C:\\Users\\danie\\OneDrive\\Área de Trabalho\\Jungle\\Frontend Challenge (5)\\Desktop\\Login.png",
+    "referenceSize": [
+      1440,
+      1981
+    ],
+    "actualRenderedSize": [
+      1440,
+      1981
+    ],
+    "pixelDifferenceOver30Pct": 18.72,
+    "meanAbsoluteChannelDifference": 21.33,
+    "errors": []
+  },
+  {
+    "case": "register-desktop",
+    "reference": "C:\\Users\\danie\\OneDrive\\Área de Trabalho\\Jungle\\Frontend Challenge (6)\\Desktop\\Cadastro.png",
+    "referenceSize": [
+      1440,
+      1981
+    ],
+    "actualRenderedSize": [
+      1440,
+      1981
+    ],
+    "pixelDifferenceOver30Pct": 17.83,
+    "meanAbsoluteChannelDifference": 20.44,
+    "errors": []
+  },
+  {
+    "case": "profile-desktop",
+    "reference": "C:\\Users\\danie\\OneDrive\\Área de Trabalho\\Jungle\\Frontend Challenge (7)\\Desktop\\Perfil do Colecionador.png",
+    "referenceSize": [
+      1440,
+      1080
+    ],
+    "actualRenderedSize": [
+      1440,
+      1080
+    ],
+    "pixelDifferenceOver30Pct": 3.64,
+    "meanAbsoluteChannelDifference": 3.83,
+    "errors": []
+  },
+  {
+    "case": "wallets-desktop",
+    "reference": "C:\\Users\\danie\\OneDrive\\Área de Trabalho\\Jungle\\Frontend Challenge (8)\\Desktop\\Carteiras.png",
+    "referenceSize": [
+      1440,
+      1080
+    ],
+    "actualRenderedSize": [
+      1440,
+      1080
+    ],
+    "pixelDifferenceOver30Pct": 4.45,
+    "meanAbsoluteChannelDifference": 4.69,
+    "errors": []
+  },
+  {
+    "case": "home-mobile",
+    "reference": "C:\\Users\\danie\\OneDrive\\Área de Trabalho\\Jungle\\Frontend Challenge (9)\\Mobile\\Início.png",
+    "referenceSize": [
+      414,
+      896
+    ],
+    "actualRenderedSize": [
+      414,
+      896
+    ],
+    "pixelDifferenceOver30Pct": 23,
+    "meanAbsoluteChannelDifference": 23.33,
+    "errors": []
+  },
+  {
+    "case": "detail-mobile",
+    "reference": "C:\\Users\\danie\\OneDrive\\Área de Trabalho\\Jungle\\Frontend Challenge (10)\\Mobile\\Detalhes do NFT.png",
+    "referenceSize": [
+      414,
+      896
+    ],
+    "actualRenderedSize": [
+      414,
+      896
+    ],
+    "pixelDifferenceOver30Pct": 23.29,
+    "meanAbsoluteChannelDifference": 27.89,
+    "errors": []
+  },
+  {
+    "case": "cart-mobile",
+    "reference": "C:\\Users\\danie\\OneDrive\\Área de Trabalho\\Jungle\\Frontend Challenge (11)\\Mobile\\Carrinho de NFTs.png",
+    "referenceSize": [
+      414,
+      896
+    ],
+    "actualRenderedSize": [
+      414,
+      896
+    ],
+    "pixelDifferenceOver30Pct": 25.74,
+    "meanAbsoluteChannelDifference": 28.77,
+    "errors": []
+  },
+  {
+    "case": "checkout-mobile",
+    "reference": "C:\\Users\\danie\\OneDrive\\Área de Trabalho\\Jungle\\Frontend Challenge (12)\\Mobile\\Pagamento.png",
+    "referenceSize": [
+      414,
+      896
+    ],
+    "actualRenderedSize": [
+      414,
+      896
+    ],
+    "pixelDifferenceOver30Pct": 10.2,
+    "meanAbsoluteChannelDifference": 15.02,
+    "errors": []
+  },
+  {
+    "case": "login-mobile",
+    "reference": "C:\\Users\\danie\\OneDrive\\Área de Trabalho\\Jungle\\Frontend Challenge (13)\\Mobile\\Login.png",
+    "referenceSize": [
+      414,
+      896
+    ],
+    "actualRenderedSize": [
+      414,
+      896
+    ],
+    "pixelDifferenceOver30Pct": 10.21,
+    "meanAbsoluteChannelDifference": 18.8,
+    "errors": []
+  },
+  {
+    "case": "register-mobile",
+    "reference": "C:\\Users\\danie\\OneDrive\\Área de Trabalho\\Jungle\\Frontend Challenge (14)\\Mobile\\Cadastro.png",
+    "referenceSize": [
+      414,
+      896
+    ],
+    "actualRenderedSize": [
+      414,
+      896
+    ],
+    "pixelDifferenceOver30Pct": 10.42,
+    "meanAbsoluteChannelDifference": 19.73,
+    "errors": []
+  }
+]
