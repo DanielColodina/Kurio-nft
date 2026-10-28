@@ -1,11 +1,48 @@
 # Arquitetura
 
-O frontend é organizado em rotas, páginas, componentes, hooks, serviços, mocks e tipos. TanStack Router mantém filtros e busca na URL; TanStack Query controla cache, estados assíncronos e cancelamento; Axios concentra o acesso HTTP.
+## Organização
 
-MSW fornece a API REST e o transporte Socket.IO da demonstração. O estado é persistido no navegador e separado por usuário. Senhas de teste são comparadas por hash SHA-256 e não ficam armazenadas em texto aberto. Valores financeiros usam `Decimal.js` e chegam pela API como strings.
+`src/pages` contém as telas e `src/components` concentra os elementos compartilhados. Rotas e parâmetros de busca são responsabilidade do TanStack Router. Dados remotos passam por hooks do TanStack Query e pelo cliente Axios em `src/services/api`. Os componentes não importam fixtures.
 
-O checkout cria um snapshot imutável de itens e preços. A chave de idempotência e o fingerprint da requisição impedem duplicação ou reutilização com conteúdo diferente. O carrinho só é removido após confirmação; recusas e falhas o preservam.
+Em desenvolvimento e na demonstração pública, o MSW intercepta REST e Socket.IO. O mesmo conjunto de handlers é usado pelos testes. O estado simulado é persistido no `localStorage` para permitir refresh e pode ser restaurado pelo endpoint de teste.
 
-Eventos `nft.updated` e `order.updated` carregam identidade e versão. O cliente rejeita eventos antigos e reconcilia dados por REST na reconexão. Rotas privadas validam a sessão e preservam a URL de retorno.
+## REST
 
-O build usa base `/kurio-nft/`, enquanto o desenvolvimento permanece na raiz. Nginx serve somente esse subdiretório e mantém os outros sistemas do domínio isolados.
+| Método | Recurso | Uso |
+|---|---|---|
+| `GET` | `/session` | recuperar sessão |
+| `POST` | `/login`, `/register`, `/logout` | conta e sessão |
+| `GET` | `/nfts`, `/nfts/:id` | catálogo paginado e detalhe |
+| `GET`, `PUT` | `/favorites`, `/favorites/:id` | favoritos do usuário |
+| `GET`, `PUT` | `/cart` | carrinho do visitante ou usuário |
+| `GET` | `/quote` | cupom, taxa e total |
+| `POST`, `GET` | `/orders`, `/orders/:id` | criação e recuperação do pedido |
+| `GET`, `PUT` | `/profile` | perfil do colecionador |
+| `GET`, `PUT` | `/wallets` | carteiras cadastradas |
+
+Preços são strings decimais e os cálculos usam `Decimal.js`. A criação do pedido exige `Idempotency-Key`. A tentativa fica associada ao conteúdo da requisição: repetir a mesma tentativa devolve o pedido original; usar a chave com outro conteúdo retorna conflito.
+
+## Sessão e dados locais
+
+Contas armazenam somente o hash da senha. Carrinho, favoritos, perfil, carteiras e pedidos são separados por usuário. O carrinho do visitante é transferido no login sem expor o carrinho de outra conta. Rotas privadas consultam a sessão antes de renderizar e guardam o destino para continuar o fluxo após o login.
+
+No logout, o Query Client é limpo para não manter dados privados da sessão anterior. O cenário `expired` permite reproduzir perda de sessão durante a navegação.
+
+## Cache e mutations
+
+Consultas usam `staleTime` de 30 segundos, um retry e não refazem a requisição ao focar a janela. A chave do catálogo inclui todos os parâmetros enviados à API, isolando busca, filtros, ordenação e página. O `AbortSignal` do TanStack Query é encaminhado ao Axios.
+
+Favoritar usa atualização otimista: o cache é atualizado antes da resposta e restaurado se a mutation falhar. Carrinho, cotação, perfil e carteiras são invalidados depois de mutations relacionadas.
+
+## Socket.IO
+
+O cliente se conecta com `socket.io-client`; o servidor simulado usa `@mswjs/socket.io-binding`. Os eventos são:
+
+- `nft.updated`: identidade, preço, estoque e versão;
+- `order.updated`: identidade do pedido e usuário, estado e versão.
+
+Eventos antigos não substituem versões mais novas e estados terminais de pedido não regridem. Ao reconectar, catálogo e pedidos ativos são reconciliados pela API REST. Listeners são removidos ao encerrar o cliente.
+
+## Limitações da demonstração
+
+Não há blockchain, extensão de carteira ou pagamento real. Endereços, transações e conexão de carteira são simulados, e a aplicação nunca solicita chave privada ou seed phrase. As oito artes disponíveis foram reutilizadas nas fixtures adicionais para que filtros e paginação pudessem ser exercitados sem introduzir imagens externas.
