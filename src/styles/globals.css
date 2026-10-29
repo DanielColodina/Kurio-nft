@@ -97,6 +97,37 @@ a {
 .field::placeholder {
   color: #a67c50;
 }
+.kurio-auth-social {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-align: center;
+}
+.kurio-auth-social-icon {
+  display: inline-grid;
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  place-items: center;
+  border-radius: 50%;
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1;
+}
+.kurio-auth-google-icon {
+  border: 1px solid #d8d8d8;
+  background: #fff;
+  color: #4285f4;
+}
+.kurio-auth-facebook-icon {
+  padding-top: 3px;
+  background: #1877f2;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  font-size: 17px;
+}
 .section-title {
   font-size: 18px;
   color: var(--accent);

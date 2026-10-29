@@ -245,9 +245,15 @@ export function AuthPage({ mode }: { mode: "login" | "register" }) {
               "Login social indisponível nesta demonstração. Use as credenciais de teste.",
             )
           }
-          className="field rounded-[6px] mb-3"
+          className="kurio-auth-social field rounded-[6px] mb-3"
         >
-          🌐 Continuar com Google
+          <span
+            aria-hidden="true"
+            className="kurio-auth-social-icon kurio-auth-google-icon"
+          >
+            G
+          </span>
+          <span>Continuar com Google</span>
         </button>
         <button
           onClick={() =>
@@ -255,9 +261,15 @@ export function AuthPage({ mode }: { mode: "login" | "register" }) {
               "Login social indisponível nesta demonstração. Use as credenciais de teste.",
             )
           }
-          className="field rounded-[6px]"
+          className="kurio-auth-social field rounded-[6px]"
         >
-          ⓕ Continuar com Facebook
+          <span
+            aria-hidden="true"
+            className="kurio-auth-social-icon kurio-auth-facebook-icon"
+          >
+            f
+          </span>
+          <span>Continuar com Facebook</span>
         </button>
         <p className="mobile-only text-center muted mt-10">
           {mode === "login" ? (
