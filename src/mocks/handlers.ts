@@ -139,10 +139,6 @@ export const handlers = [
       items = [...items].sort((a, b) =>
         new Decimal(b.price).comparedTo(a.price),
       );
-    if (!sort)
-      items = [...items].sort((a, b) =>
-        String(b.createdAt).localeCompare(String(a.createdAt)),
-      );
     const total = items.length;
     const totalPages = Math.max(1, Math.ceil(total / pageSize));
     const safePage = Math.min(page, totalPages);

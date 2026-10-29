@@ -8,7 +8,7 @@ export function MobileNav() {
   return (
     <nav
       aria-label="Navegação móvel"
-      className="mobile-only fixed bottom-0 inset-x-0 z-50 h-[94px] rounded-t-[32px] bg-[#2a1712] flex items-center justify-around px-4 pb-[env(safe-area-inset-bottom)]"
+      className="mobile-only kurio-mobile-nav fixed bottom-0 inset-x-0 z-50 h-[94px] rounded-t-[32px] bg-[#2a1712] flex items-center justify-around px-4 pb-[env(safe-area-inset-bottom)]"
     >
       <Link to="/" aria-label="Início">
         <Home size={22} fill="#d98e49" color="#d98e49" />

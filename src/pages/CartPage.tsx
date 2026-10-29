@@ -103,7 +103,12 @@ export function CartPage() {
                             {nft.name}
                           </b>
                           <p className="muted text-sm">
-                            Edição: {line.edition}
+                            <span className="desktop-only">
+                              ID do token: {nft.tokenId}
+                            </span>
+                            <span className="mobile-only">
+                              Edição: {line.edition}
+                            </span>
                           </p>
                         </div>
                       </div>
@@ -167,7 +172,7 @@ export function CartPage() {
                   )}
                 </p>
               )}
-              <div className="mt-5 grid grid-cols-2 gap-y-4">
+              <div className="mt-5 grid grid-cols-[1fr_auto] gap-x-4 gap-y-3">
                 <span>Subtotal</span>
                 <span className="text-right">{quote?.subtotal} ETH</span>
                 <span>Desconto do lançamento</span>
@@ -182,7 +187,7 @@ export function CartPage() {
               </div>
               <button
                 onClick={() => void nav({ to: "/checkout" })}
-                className="btn btn-primary rounded-full md:rounded-none w-full mt-6 h-14"
+                className="btn btn-primary rounded-full md:rounded-none w-full mt-6 h-14 md:h-10"
               >
                 Conectar e finalizar
               </button>
@@ -196,12 +201,24 @@ export function CartPage() {
           </div>
         )}
       </section>
-      <section className="desktop-only container mt-24">
+      <section className="desktop-only container mt-16 kurio-cart-recommendations">
         <h2 className="section-title">Colecionadores também viram</h2>
         <div className="grid grid-cols-5 gap-7 mt-8">
-          {catalog?.items.slice(1, 6).map((n) => (
-            <NftCard key={n.id} nft={n} />
-          ))}
+          {[
+            "cosmic-bloom-118",
+            "violet-nomad-314",
+            "ivory-baron-088",
+            "golden-beat-207",
+            "golden-signal-160",
+          ].map((id) => {
+            const nft = catalog?.items.find((item) => item.id === id);
+            return nft ? <NftCard key={nft.id} nft={nft} /> : null;
+          })}
+        </div>
+        <div className="kurio-cart-dots" aria-hidden="true">
+          <i />
+          <i />
+          <i />
         </div>
       </section>
       <Footer />

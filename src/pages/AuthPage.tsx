@@ -5,16 +5,16 @@ import { api } from "../services/api/client";
 import { queryClient } from "../app/query";
 import { AxiosError } from "axios";
 
-const backdropNfts = [
-  "emerald-ape-042.webp",
-  "sage-nomad-009.webp",
-  "ivory-baron-088.webp",
-  "golden-beat-207.webp",
-  "violet-nomad-314.webp",
-  "cosmic-bloom-118.webp",
-  "emerald-ape-042.webp",
-  "cosmic-bloom-118.webp",
-  "golden-signal-160.webp",
+const backdropNfts: ReadonlyArray<readonly [string, string, string]> = [
+  ["emerald-ape-042.webp", "Emerald Ape #042", "1.19"],
+  ["sage-nomad-009.webp", "Sage Nomad #009", "1.69"],
+  ["neon-vessel-552.webp", "Neon Vessel #552", "1.99"],
+  ["cosmic-bloom-118.webp", "Cosmic Bloom #118", "1.29"],
+  ["violet-nomad-314.webp", "Violet Nomad #314", "1.39"],
+  ["ivory-baron-088.webp", "Ivory Baron #088", "1.79"],
+  ["golden-beat-207.webp", "Golden Beat #207", "0.99"],
+  ["sage-nomad-009.webp", "Golden Frequency #071", "0.59"],
+  ["golden-signal-160.webp", "Golden Signal #160", "0.39"],
 ];
 
 function AuthMarketplaceBackdrop() {
@@ -24,15 +24,16 @@ function AuthMarketplaceBackdrop() {
     <div className="desktop-only kurio-auth-backdrop" aria-hidden="true">
       <section className="kurio-auth-hero">
         <div>
-          <p>DESCUBRA. COLECIONE. CONECTE-SE.</p>
+          <p>Bem-vindo à Kurio</p>
           <h2>
             SEJA DONO DO FUTURO
             <br />
             DA ARTE DIGITAL
           </h2>
           <span>
-            Explore NFTs únicos de artistas visionários e faça parte da nova era
-            da criatividade digital.
+            Descubra NFTs selecionados de criadores emergentes e consagrados.
+            Colecione arte digital rara, apoie artistas e tenha uma parte da
+            cultura da internet.
           </span>
           <b>EXPLORAR NFTs</b>
         </div>
@@ -63,11 +64,11 @@ function AuthMarketplaceBackdrop() {
             <span>Mais recentes</span>
           </header>
           <div className="kurio-auth-grid">
-            {backdropNfts.map((image, index) => (
+            {backdropNfts.map(([image, name, price], index) => (
               <article key={`${image}-${index}`}>
                 <img src={asset(image)} alt="" />
-                <b>{["Emerald Ape", "Sage Nomad", "Ivory Baron"][index % 3]}</b>
-                <span>0.{["89", "74", "65"][index % 3]} ETH</span>
+                <b>{name}</b>
+                <span>{price} ETH</span>
               </article>
             ))}
           </div>

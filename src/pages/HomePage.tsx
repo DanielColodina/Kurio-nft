@@ -46,7 +46,7 @@ export function HomePage() {
     const items = data?.items ?? [];
     if (!params.favorites) return items;
     try {
-      const state = JSON.parse(localStorage.getItem("kurio.mock.v2") ?? "{}");
+      const state = JSON.parse(localStorage.getItem("kurio.mock.v3") ?? "{}");
       const favorites = state.favoritesByUser?.[state.session?.id] ?? [];
       return items.filter((item) => favorites.includes(item.id));
     } catch {
@@ -392,7 +392,7 @@ export function HomePage() {
                     <NftCard
                       key={`${nft.id}-${index}`}
                       nft={nft}
-                      badge={nft.id === "ivory-baron-088" ? "RARO" : null}
+                      badge={nft.id === "neon-vessel-552" ? "RARO" : null}
                       stagger={index % 2 === 1}
                     />
                   ))}

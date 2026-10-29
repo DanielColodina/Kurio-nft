@@ -78,7 +78,7 @@ export function DetailPage() {
   };
   return (
     <>
-      <section className="container mt-6 md:mt-12">
+      <section className="container kurio-detail-page mt-6 md:mt-12">
         <div className="mobile-only kurio-detail-mobile-controls flex justify-between">
           <button
             type="button"
@@ -152,13 +152,13 @@ export function DetailPage() {
           <div className="kurio-detail-panel surface md:bg-transparent -mt-10 md:mt-0 relative rounded-t-[30px] p-6 md:p-0">
             <div className="flex items-center justify-between">
               <h1 className="text-xl md:text-3xl font-bold">{nft.name}</h1>
-              <span className="flex items-center gap-1">
+              <span className="flex shrink-0 items-center gap-1">
                 <Star size={16} fill="#d98e49" className="accent" />
                 4.8<small>(19)</small>
               </span>
             </div>
             <p className="desktop-only price text-2xl mt-3">{nft.price} ETH</p>
-            <div className="border-t border-[#38220f] mt-4 pt-4">
+            <div className="kurio-detail-description border-t border-[#38220f] mt-4 pt-4">
               <b className="desktop-only">Sobre este NFT:</b>
               <p className="muted leading-7 mt-2">
                 Um colecionável digital 1/50 finalizado à mão da coleção Kurio
@@ -173,7 +173,7 @@ export function DetailPage() {
                   onClick={() => setEdition(x)}
                   aria-pressed={edition === x}
                   aria-label={`Selecionar edição ${x}`}
-                  className={`min-h-11 md:min-h-0 rounded-full border px-3 py-1 text-sm ${edition === x ? "border-[#d98e49] accent" : "border-[#5b331d] muted"}`}
+                  className={`min-h-[30px] md:min-h-0 rounded-full border px-3 py-1 text-sm ${edition === x ? "border-[#d98e49] accent" : "border-[#5b331d] muted"}`}
                   key={x}
                 >
                   {x}

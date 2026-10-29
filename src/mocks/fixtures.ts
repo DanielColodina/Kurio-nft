@@ -84,6 +84,17 @@ const featuredNfts: Nft[] = [
     version: 1,
   },
   {
+    id: "golden-frequency-071",
+    tokenId: "#0071",
+    name: "Golden Frequency #071",
+    price: "0.59",
+    image: asset("sage-nomad-009.webp"),
+    category: "Música",
+    network: "Ethereum",
+    stock: 25,
+    version: 1,
+  },
+  {
     id: "golden-signal-160",
     tokenId: "#0160",
     name: "Golden Signal #160",

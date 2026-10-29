@@ -27,12 +27,12 @@ O comando `npm run audit:reference` comparou as 15 telas com os arquivos origina
 
 | Tela | Desktop | Mobile |
 |---|---:|---:|
-| Home | 28,52% | 34,49% |
-| Detalhe | 16,11% | 23,81% |
-| Carrinho | 19,33% | 28,06% |
-| Checkout | 8,68% | 10,20% |
-| Login | 18,72% | 10,21% |
-| Cadastro | 17,83% | 10,42% |
+| Home | 17,62% | 20,22% |
+| Detalhe | 16,43% | 22,47% |
+| Carrinho | 10,51% | 21,41% |
+| Checkout | 8,68% | 10,19% |
+| Login | 17,97% | 10,21% |
+| Cadastro | 17,08% | 10,41% |
 
 Perfil desktop ficou em 3,60%, carteiras desktop em 4,34% e confirmação desktop em 3,40%. Os valores são registrados como resultado real; a interface não é declarada idêntica aos PNGs.
 

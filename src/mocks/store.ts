@@ -1,7 +1,7 @@
 import type { CartLine, Order, User, Wallet } from "../types";
 import { demoUser, secondDemoUser } from "./fixtures";
 
-const key = "kurio.mock.v2";
+const key = "kurio.mock.v3";
 
 export type State = {
   session: User | null;
@@ -70,6 +70,7 @@ export function updateState(mutator: (state: State) => void) {
 
 export function resetState() {
   localStorage.removeItem(key);
+  localStorage.removeItem("kurio.mock.v2");
   localStorage.removeItem("kurio.mock.v1");
 }
 

@@ -120,7 +120,7 @@ test("sessão expirada durante checkout redireciona e preserva o carrinho", asyn
   await page.goto("/cart");
   await expect(page.getByText("Emerald Ape #042")).toBeVisible();
   const orderCount = await page.evaluate(() => {
-    const state = JSON.parse(localStorage.getItem("kurio.mock.v2") ?? "{}");
+    const state = JSON.parse(localStorage.getItem("kurio.mock.v3") ?? "{}");
     return Array.isArray(state.orders) ? state.orders.length : 0;
   });
   expect(orderCount).toBe(0);
