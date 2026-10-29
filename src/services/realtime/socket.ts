@@ -19,13 +19,20 @@ const onDemoOrderChange = (event: Event) => {
   };
   socket?.emit("demo.order-change", orderId, status);
 };
+const onDemoReconnect = () => {
+  socket?.disconnect();
+  document.documentElement.dataset.realtime = "reconnecting";
+  window.setTimeout(() => socket?.connect(), 200);
+};
 
 export function startRealtime(queryClient: QueryClient) {
   socket?.disconnect();
   window.removeEventListener("kurio:demo-price-change", onDemoPriceChange);
   window.removeEventListener("kurio:demo-order-change", onDemoOrderChange);
+  window.removeEventListener("kurio:demo-reconnect", onDemoReconnect);
   window.addEventListener("kurio:demo-price-change", onDemoPriceChange);
   window.addEventListener("kurio:demo-order-change", onDemoOrderChange);
+  window.addEventListener("kurio:demo-reconnect", onDemoReconnect);
   document.documentElement.dataset.realtime = "connecting";
   socket = io("http://kurio.local", {
     transports: ["websocket"],
@@ -68,6 +75,7 @@ export function startRealtime(queryClient: QueryClient) {
 export function stopRealtime() {
   window.removeEventListener("kurio:demo-price-change", onDemoPriceChange);
   window.removeEventListener("kurio:demo-order-change", onDemoOrderChange);
+  window.removeEventListener("kurio:demo-reconnect", onDemoReconnect);
   socket?.removeAllListeners();
   socket?.disconnect();
   socket = undefined;

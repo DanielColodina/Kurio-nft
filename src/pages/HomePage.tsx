@@ -178,11 +178,18 @@ export function HomePage() {
               className="kurio-hero-main"
               src={asset("emerald-ape-042.webp")}
               alt="Emerald Ape em destaque"
+              width="520"
+              height="520"
+              fetchPriority="high"
             />
             <img
               className="kurio-hero-secondary mobile-only"
               src={asset("sage-nomad-009.webp")}
               alt="Sage Nomad"
+              width="180"
+              height="180"
+              loading="lazy"
+              decoding="async"
             />
           </div>
           <div className="kurio-hero-dots" aria-hidden="true">

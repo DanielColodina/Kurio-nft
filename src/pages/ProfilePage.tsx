@@ -120,6 +120,7 @@ export function ProfilePage() {
           <label className="block">Confirmar nova senha<input className="field mt-2" type="password" autoComplete="new-password" value={passwords.confirm} onChange={(event) => setPasswords((old) => ({ ...old, confirm: event.target.value }))} /></label>
         </div>
         <button className="btn btn-primary mt-8" disabled={saving}>{saving ? "Salvando…" : "Salvar"}</button>
+        <button type="button" className="mobile-only btn mt-8 ml-3" onClick={logout}>Sair</button>
         {status && <span role="status" className="accent ml-4">{status}</span>}
         {error && <p role="alert" className="text-red-300 mt-4">{error}</p>}
       </form>

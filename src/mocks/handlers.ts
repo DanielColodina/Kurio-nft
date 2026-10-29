@@ -37,6 +37,9 @@ const apiPath = (path: string) => `${import.meta.env.BASE_URL}api${path}`;
 const unauthorized = () =>
   HttpResponse.json({ message: "Sessão expirada." }, { status: 401 });
 
+const sessionExpired = () =>
+  !readState().session || activeScenario() === "expired";
+
 const hashPassword = async (value: string) => {
   const hash = await crypto.subtle.digest(
     "SHA-256",
@@ -250,14 +253,19 @@ export const handlers = [
     return HttpResponse.json(quote(currentCart(readState()), coupon));
   }),
   http.get(apiPath("/favorites"), () =>
-    readState().session
+    !sessionExpired()
       ? HttpResponse.json(
           readState().favoritesByUser[readState().session!.id] ?? [],
         )
       : unauthorized(),
   ),
   http.put(apiPath("/favorites/:id"), ({ params }) => {
-    if (!readState().session) return unauthorized();
+    if (sessionExpired()) return unauthorized();
+    if (activeScenario() === "favorite-error")
+      return HttpResponse.json(
+        { message: "Não foi possível atualizar os favoritos." },
+        { status: 503 },
+      );
     const state = updateState((s) => {
       const id = String(params.id);
       const userId = s.session!.id;
@@ -269,12 +277,12 @@ export const handlers = [
     return HttpResponse.json(state.favoritesByUser[state.session!.id] ?? []);
   }),
   http.get(apiPath("/profile"), () =>
-    readState().session
+    !sessionExpired()
       ? HttpResponse.json(readState().profilesByUser[readState().session!.id])
       : unauthorized(),
   ),
   http.put(apiPath("/profile"), async ({ request }) => {
-    if (!readState().session) return unauthorized();
+    if (sessionExpired()) return unauthorized();
     const profile = (await request.json()) as User;
     if (!profile.name.trim() || !/^\S+@\S+\.\S+$/.test(profile.email))
       return HttpResponse.json(
@@ -291,7 +299,7 @@ export const handlers = [
   }),
   http.put(apiPath("/profile/password"), async ({ request }) => {
     const state = readState();
-    if (!state.session) return unauthorized();
+    if (!state.session || activeScenario() === "expired") return unauthorized();
     const body = (await request.json()) as {
       currentPassword: string;
       newPassword: string;
@@ -319,14 +327,14 @@ export const handlers = [
     return new HttpResponse(null, { status: 204 });
   }),
   http.get(apiPath("/wallets"), () =>
-    readState().session
+    !sessionExpired()
       ? HttpResponse.json(
           readState().walletsByUser[readState().session!.id] ?? [],
         )
       : unauthorized(),
   ),
   http.put(apiPath("/wallets"), async ({ request }) => {
-    if (!readState().session) return unauthorized();
+    if (sessionExpired()) return unauthorized();
     const wallets = (await request.json()) as Wallet[];
     if (
       wallets.length > 2 ||
@@ -347,7 +355,11 @@ export const handlers = [
     return HttpResponse.json(wallets);
   }),
   http.post(apiPath("/orders"), async ({ request }) => {
-    if (!readState().session) return unauthorized();
+    if (
+      sessionExpired() ||
+      sessionStorage.getItem("kurio.demo.checkout-session-expired") === "true"
+    )
+      return unauthorized();
     const key = request.headers.get("Idempotency-Key");
     if (!key)
       return HttpResponse.json(
@@ -433,7 +445,7 @@ export const handlers = [
     return HttpResponse.json(order, { status: 201 });
   }),
   http.get(apiPath("/orders/:id"), ({ params }) => {
-    if (!readState().session) return unauthorized();
+    if (sessionExpired()) return unauthorized();
     const state = readState();
     const order = state.orders.find(
       (o) => o.id === params.id && o.userId === state.session!.id,

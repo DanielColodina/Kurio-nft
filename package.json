@@ -11,6 +11,7 @@
     "lint": "eslint .",
     "test:e2e": "playwright test tests/e2e",
     "test:visual": "playwright test tests/visual",
+    "audit:reference": "node scripts/reference-visual-audit.mjs",
     "lighthouse": "node scripts/lighthouse.mjs"
   },
   "dependencies": {

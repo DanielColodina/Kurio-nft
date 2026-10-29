@@ -45,7 +45,14 @@ export function NftCard({
     <article className={`kurio-nft-card ${stagger ? "kurio-stagger" : ""}`}>
       <div className="kurio-nft-image-wrap">
         <Link to="/nft/$id" params={{ id: nft.id }}>
-          <img src={nft.image} alt={`Arte do NFT ${nft.name}`} />
+          <img
+            src={nft.image}
+            alt={`Arte do NFT ${nft.name}`}
+            width="360"
+            height="360"
+            loading="lazy"
+            decoding="async"
+          />
         </Link>
         {badge && <span className="kurio-rarity">{badge}</span>}
         <button

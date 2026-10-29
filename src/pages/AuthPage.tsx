@@ -64,7 +64,7 @@ function AuthMarketplaceBackdrop() {
           </header>
           <div className="kurio-auth-grid">
             {backdropNfts.map((image, index) => (
-              <article key={image}>
+              <article key={`${image}-${index}`}>
                 <img src={asset(image)} alt="" />
                 <b>{["Emerald Ape", "Sage Nomad", "Ivory Baron"][index % 3]}</b>
                 <span>0.{["89", "74", "65"][index % 3]} ETH</span>

@@ -32,6 +32,19 @@ export function DetailPage() {
   });
   const favorite = useMutation({
     mutationFn: async () => (await api.put<string[]>(`/favorites/${id}`)).data,
+    onMutate: async () => {
+      await queryClient.cancelQueries({ queryKey: ["favorites"] });
+      const previous = queryClient.getQueryData<string[]>(["favorites"]) ?? [];
+      queryClient.setQueryData(
+        ["favorites"],
+        previous.includes(id)
+          ? previous.filter((favoriteId) => favoriteId !== id)
+          : [...previous, id],
+      );
+      return { previous };
+    },
+    onError: (_error, _value, context) =>
+      queryClient.setQueryData(["favorites"], context?.previous ?? []),
     onSuccess: (value) => queryClient.setQueryData(["favorites"], value),
   });
   if (isLoading)
@@ -68,12 +81,15 @@ export function DetailPage() {
       <section className="container mt-6 md:mt-12">
         <div className="mobile-only kurio-detail-mobile-controls flex justify-between">
           <button
+            type="button"
             onClick={() => history.back()}
-            className="w-10 h-10 rounded-full surface grid place-items-center"
+            aria-label="Voltar"
+            className="w-11 h-11 rounded-full surface grid place-items-center"
           >
-            <ChevronLeft />
+            <ChevronLeft aria-hidden="true" />
           </button>
           <button
+            type="button"
             onClick={() =>
               user
                 ? favorite.mutate()
@@ -88,24 +104,37 @@ export function DetailPage() {
                 : "Adicionar NFT aos favoritos"
             }
             aria-pressed={favorites.includes(id)}
-            className="w-10 h-10 rounded-full surface accent grid place-items-center"
+            className="w-11 h-11 rounded-full surface accent grid place-items-center"
           >
             <Heart
               size={19}
               fill={favorites.includes(id) ? "#d98e49" : "transparent"}
+              aria-hidden="true"
             />
           </button>
         </div>
+        {favorite.isError && (
+          <p role="alert" className="mobile-only text-red-300 mb-2">
+            Não foi possível atualizar os favoritos.
+          </p>
+        )}
         <p className="desktop-only font-bold mb-3">Início / Mercado</p>
         <div className="kurio-detail-layout grid md:grid-cols-[520px_1fr] gap-7 md:gap-10">
           <div className="kurio-detail-gallery md:grid md:grid-cols-[90px_1fr] gap-5">
             <div className="desktop-only space-y-4">
               {[1, 2, 3, 4].map((x) => (
                 <button
+                  type="button"
                   key={x}
+                  aria-label={`Selecionar visualização ${x}`}
                   className="block border border-transparent focus:border-[#d98e49]"
                 >
-                  <img src={nft.image} alt={`Miniatura ${x}`} />
+                  <img
+                    src={nft.image}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                  />
                 </button>
               ))}
             </div>
@@ -113,6 +142,9 @@ export function DetailPage() {
               <img
                 src={nft.image}
                 alt={nft.name}
+                width="520"
+                height="520"
+                fetchPriority="high"
                 className="w-full aspect-square object-cover rounded-[22px] md:rounded-[10px]"
               />
             </div>
@@ -137,8 +169,11 @@ export function DetailPage() {
             <div className="flex gap-2 mt-2">
               {["1/1", "1/10", "1/50", "ABERTA"].map((x) => (
                 <button
+                  type="button"
                   onClick={() => setEdition(x)}
-                  className={`rounded-full border px-3 py-1 text-sm ${edition === x ? "border-[#d98e49] accent" : "border-[#5b331d] muted"}`}
+                  aria-pressed={edition === x}
+                  aria-label={`Selecionar edição ${x}`}
+                  className={`min-h-11 md:min-h-0 rounded-full border px-3 py-1 text-sm ${edition === x ? "border-[#d98e49] accent" : "border-[#5b331d] muted"}`}
                   key={x}
                 >
                   {x}

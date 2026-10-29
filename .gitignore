@@ -2,6 +2,7 @@ node_modules/
 dist/
 test-results/
 reports/playwright/
+reports/reference-visual-audit/
 *.tsbuildinfo
 .env*
 !.env.example

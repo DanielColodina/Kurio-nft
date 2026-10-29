@@ -66,7 +66,7 @@ test("recurso inexistente exibe estado apropriado", async ({ page }) => {
   await expect(page.getByText("NFT não encontrado")).toBeVisible();
 });
 
-test("Socket.IO simulado conecta e atualiza o preço em tempo real", async ({
+test("Socket.IO simulado atualiza preço e reconecta sem perder dados", async ({
   page,
 }) => {
   await page.goto("/nft/emerald-ape-042");
@@ -84,6 +84,123 @@ test("Socket.IO simulado conecta e atualiza o preço em tempo real", async ({
   await expect(
     page.locator(".price:visible", { hasText: "1.27 ETH" }).first(),
   ).toBeVisible();
+  await page.evaluate(() => {
+    window.dispatchEvent(new CustomEvent("kurio:demo-reconnect"));
+  });
+  await expect(page.locator("html")).toHaveAttribute(
+    "data-realtime",
+    "reconnecting",
+  );
+  await expect(page.locator("html")).toHaveAttribute(
+    "data-realtime",
+    "connected",
+  );
+  await expect(
+    page.locator(".price:visible", { hasText: "1.27 ETH" }).first(),
+  ).toBeVisible();
+});
+
+test("sessão expirada durante checkout redireciona e preserva o carrinho", async ({
+  page,
+}) => {
+  await page.goto("/login?returnTo=%2Fcheckout");
+  await page
+    .getByRole("main")
+    .getByRole("button", { name: "Entrar", exact: true })
+    .click();
+  await expect(page).toHaveURL(/\/checkout$/);
+  await page.evaluate(() => {
+    sessionStorage.setItem("kurio.demo.checkout-session-expired", "true");
+  });
+  await page.getByRole("button", { name: "Confirmar compra" }).click();
+  await expect(page).toHaveURL(/\/login\?returnTo=%2Fcheckout$/);
+  await page.evaluate(() => {
+    sessionStorage.removeItem("kurio.demo.checkout-session-expired");
+  });
+  await page.goto("/cart");
+  await expect(page.getByText("Emerald Ape #042")).toBeVisible();
+  const orderCount = await page.evaluate(() => {
+    const state = JSON.parse(localStorage.getItem("kurio.mock.v2") ?? "{}");
+    return Array.isArray(state.orders) ? state.orders.length : 0;
+  });
+  expect(orderCount).toBe(0);
+});
+
+test("troca de usuário mantém favoritos e perfil isolados", async ({ page }) => {
+  await page.goto("/login");
+  await page
+    .getByRole("main")
+    .getByRole("button", { name: "Entrar", exact: true })
+    .click();
+  const firstFavorites = await page.evaluate(async () => {
+    const response = await fetch("/api/favorites/emerald-ape-042", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+    });
+    return response.json();
+  });
+  expect(firstFavorites).toContain("emerald-ape-042");
+  await page.goto("/profile");
+  await page.getByRole("button", { name: /Sair/ }).click();
+  await expect(page).toHaveURL(/\/$/);
+
+  await page.goto("/login");
+  await page.getByPlaceholder("Digite seu e-mail").fill("curadora@email.com");
+  await page.getByPlaceholder("Senha", { exact: true }).fill("Jungle@2026");
+  await page
+    .getByRole("main")
+    .getByRole("button", { name: "Entrar", exact: true })
+    .click();
+  await page.goto("/profile");
+  await expect(page.getByLabel("Nome de exibição *")).toHaveValue(
+    "Curadora Jungle",
+  );
+  const secondFavorites = await page.evaluate(async () =>
+    (await fetch("/api/favorites")).json(),
+  );
+  expect(secondFavorites).toEqual([]);
+});
+
+test("falha ao favoritar desfaz a atualização otimista", async ({
+  page,
+  isMobile,
+}) => {
+  test.skip(!isMobile, "O controle de favorito do detalhe é exclusivo do mobile.");
+  await page.goto("/login");
+  await page
+    .getByRole("main")
+    .getByRole("button", { name: "Entrar", exact: true })
+    .click();
+  await page.goto("/nft/emerald-ape-042?scenario=favorite-error");
+  const favorite = page.getByRole("button", {
+    name: "Adicionar NFT aos favoritos",
+  });
+  await expect(favorite).toHaveAttribute("aria-pressed", "false");
+  const optimisticUpdate = page.evaluate(() => {
+    const button = document.querySelector<HTMLButtonElement>(
+      'button[aria-label="Adicionar NFT aos favoritos"]',
+    );
+    return new Promise<boolean>((resolve) => {
+      if (!button) return resolve(false);
+      const observer = new MutationObserver(() => {
+        if (button.getAttribute("aria-pressed") === "true") {
+          observer.disconnect();
+          resolve(true);
+        }
+      });
+      observer.observe(button, { attributes: true });
+      window.setTimeout(() => {
+        observer.disconnect();
+        resolve(false);
+      }, 2_000);
+    });
+  });
+  await favorite.click();
+  expect(await optimisticUpdate).toBe(true);
+  await expect(page.getByRole("alert")).toContainText(
+    "Não foi possível atualizar os favoritos",
+  );
+  await expect(favorite).toHaveAttribute("aria-pressed", "false");
 });
 
 test("ordenação por preço e âncora do diário permanecem funcionais", async ({
