@@ -861,7 +861,12 @@ a {
   .kurio-catalog-toolbar {
     height: 22px;
     overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
     border-bottom: 0;
+  }
+  .kurio-catalog-toolbar::-webkit-scrollbar {
+    display: none;
   }
   .kurio-tabs {
     gap: 12px;
